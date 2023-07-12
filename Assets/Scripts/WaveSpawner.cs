@@ -1,60 +1,53 @@
 using UnityEngine;
+using System.Collections;
+using TMPro;
 
 public class WaveSpawner : MonoBehaviour{
 
     public Transform cubePrefab;
-
     public Transform spherePrefab;
-
     public Transform cilinderPrefab;
-
-    public float timeBetweenWaves = 60f;
-
-    public float timeBetweenSpawns = 2f;
-
-    public int waveNumber = 1;
-    
-    private float countDownForWaves = 10f;
-
-    private float countDownForSpawns = 2f;
-
+    public float timeBetweenWaves = 60f;    
+    public int waveNumber = 0;    
+    private float countDownForWaves = 10f;    
     private int cube = 0;
-
     private int sphere = 0;
-
     private int cilinder = 0;
+    public TextMeshProUGUI waveCountDownText;
+    public TextMeshProUGUI waveNumberText;
 
     void Update (){
+        waveNumberText.text = waveNumber.ToString();
         if (countDownForWaves <= 0f){
             SpawnWave();
             countDownForWaves = timeBetweenWaves;             
         }
         countDownForWaves -= Time.deltaTime;
+        waveCountDownText.text = Mathf.Floor(countDownForWaves).ToString();
     }
 
     void SpawnWave(){
-
-        NumberOfEnemys();
-        SpawnEnemys();
         waveNumber++;
+        NumberOfEnemys();
+        StartCoroutine(SpawnEnemys());
     }
 
     void NumberOfEnemys(){
         switch (waveNumber){
             case 1:
                 cube = 3;
-                sphere = -1;
-                cilinder = -1;
+                sphere = 0;
+                cilinder = 0;
                 break;
             case 2:
                 cube = 4;
                 sphere = 1;
-                cilinder = -1;
+                cilinder = 0;
                 break;
             case 3:
                 cube = 5;
                 sphere = 2;
-                cilinder = -1;
+                cilinder = 0;
                 break;
             case 4:
                 cube = 4;
@@ -89,7 +82,7 @@ public class WaveSpawner : MonoBehaviour{
         }
     }
 
-    void SpawnEnemys(){
+    IEnumerator SpawnEnemys(){
         int cu = 0;
         int sph = 0;
         int cl = 0;
@@ -98,31 +91,26 @@ public class WaveSpawner : MonoBehaviour{
 
         while (true)
         {
-
-            if (countDownForSpawns <= 0f)
-            {
-                numBefore = numAfter;
-                if (cu < cube){
-                    Instantiate(cubePrefab);
-                    cu++;
-                    numAfter++;
-                }
-                    if (cl < cilinder){
-                    Instantiate(cilinderPrefab);
-                    cl++;
-                    numAfter++;
-                }
-                    if (sph < sphere){
-                    Instantiate(spherePrefab);
-                    sph++;
-                    numAfter++;
-                }
-                if (numBefore == numAfter){
-                    break;
-                }
-                countDownForSpawns = timeBetweenSpawns;                
+            numBefore = numAfter;
+            if (cu < cube){
+                Instantiate(cubePrefab);
+                cu++;
+                numAfter++;
             }
-            countDownForSpawns -= Time.deltaTime;
+                if (cl < cilinder){
+                Instantiate(cilinderPrefab);
+                cl++;
+                numAfter++;
+            }
+                if (sph < sphere){
+                Instantiate(spherePrefab);
+                sph++;
+                numAfter++;
+            }
+            if (numBefore == numAfter){
+                break;
+            }
+            yield return new WaitForSeconds(2f);
         }
     }
 }
