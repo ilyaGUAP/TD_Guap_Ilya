@@ -79,6 +79,11 @@ public class WaveSpawner : MonoBehaviour{
                 sphere = 8;
                 cilinder = 8;
                 break;
+            default:
+                cube = 0;
+                sphere = 0;
+                cilinder = 0;
+                break;
         }
     }
 
