@@ -17,14 +17,14 @@ public class WaveSpawner : MonoBehaviour{
     public TextMeshProUGUI waveNumberText;
 
     void Update (){
-        waveNumberText.text = "Wave number: " + waveNumber.ToString();
+        waveNumberText.text = "Wave number: " + waveNumber.ToString() + "\t";
         if (countDownForWaves <= 0f){
             PlayerStats.score += 100;
             SpawnWave();
             countDownForWaves = timeBetweenWaves;             
         }
         countDownForWaves -= Time.deltaTime;
-        waveCountDownText.text = "Next wave: " + Mathf.Floor(countDownForWaves).ToString();
+        waveCountDownText.text = "Next wave: " + Mathf.Floor(countDownForWaves).ToString() + "\t";
     }
 
     void SpawnWave(){
