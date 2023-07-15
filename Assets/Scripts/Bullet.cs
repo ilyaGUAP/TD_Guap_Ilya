@@ -1,10 +1,9 @@
 using UnityEngine;
-
 public class Bullet : MonoBehaviour {
-
 	private Transform target;
 
 	public float speed = 100f;
+	public float explosionRadius = 0f;
 	public GameObject smEffect;
 
 	public void Seeking (Transform _target)
@@ -13,16 +12,13 @@ public class Bullet : MonoBehaviour {
 	}
 	
 	void Update () {
-
 		if (target == null)
 		{
 			Destroy(gameObject);
 			return;
 		}
-
 		Vector3 dir = target.position - transform.position;
 		float distanceThisFrame = speed * Time.deltaTime;
-
 		if (dir.magnitude <= distanceThisFrame)
 		{
 			HitTarget();
@@ -30,14 +26,48 @@ public class Bullet : MonoBehaviour {
 		}
 
 		transform.Translate(dir.normalized * distanceThisFrame, Space.World);
+		transform.LookAt(target);
 
 	}
 
 	void HitTarget ()
 	{
 		GameObject effectIns = (GameObject)Instantiate(smEffect, transform.position, transform.rotation);
-		Destroy(effectIns, 2f);		
+		Destroy(effectIns, 2f);
+		Destroy(effectIns, 5f);
+
+		if (explosionRadius > 0f)
+		{
+			Explode();
+		} else
+		{
+			Damage(target);
+		}
+
+		Destroy(target.gameObject);
 		Destroy(gameObject);
-        Destroy(target.gameObject);
+	}
+
+	void Explode ()
+	{
+		Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius);
+		foreach (Collider collider in colliders)
+		{
+			if (collider.tag == "Enemy")
+			{
+				Damage(collider.transform);
+			}
+		}
+	}
+
+	void Damage (Transform enemy)
+	{
+		Destroy(enemy.gameObject);
+	}
+
+	void OnDrawGizmosSelected ()
+	{
+		Gizmos.color = Color.red;
+		Gizmos.DrawWireSphere(transform.position, explosionRadius);
 	}
 }
