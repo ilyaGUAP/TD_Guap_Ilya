@@ -2,14 +2,20 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class TowePlatforms : MonoBehaviour {
-
+	
+	public Color notMoneyColor;
 	public Color changedColor;
 	public Vector3 positionOffset;
-	private GameObject turret;
+	public GameObject turret;
 	private Renderer rend;
 	private Color defaultColor;
 
 	Building buildManager;
+
+	public Vector3 GetBuildPosition ()
+	{
+		return transform.position + positionOffset;
+	}
 
 	void Start ()
 	{
@@ -21,31 +27,30 @@ public class TowePlatforms : MonoBehaviour {
 
 	void OnMouseDown ()
 	{
-		if (EventSystem.current.IsPointerOverGameObject())
-			return;
-
-		if (buildManager.GetTurretToBuild() == null)
+		if (!buildManager.CanBuild)
 			return;
 
 		if (turret != null)
 		{
 			Debug.Log("You Can't build there!");
 			return;
-		}
-		
-		GameObject turretToBuild = buildManager.GetTurretToBuild();
-		turret = (GameObject)Instantiate(turretToBuild, transform.position + positionOffset, transform.rotation);
+		}		
+		buildManager.BuildTurretOn(this);
 	}
 
 	void OnMouseEnter ()
 	{
-		if (EventSystem.current.IsPointerOverGameObject())
+		if (!buildManager.CanBuild)
 			return;
 
-		if (buildManager.GetTurretToBuild() == null)
-			return;
-
-		rend.material.color = changedColor;
+		if (buildManager.HasMoney)
+		{
+			rend.material.color = changedColor;
+		}
+		else
+		{
+			rend.material.color = notMoneyColor;
+		}		
 	}
 
 	void OnMouseExit ()

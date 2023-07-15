@@ -1,6 +1,8 @@
 using UnityEngine;
 public class Building : MonoBehaviour {
+
 	public static Building instance;
+	
 	void Awake ()
 	{
 		if (instance != null)
@@ -15,14 +17,27 @@ public class Building : MonoBehaviour {
 	
 	public GameObject missielTurretPrefab;
 
-	private GameObject turretToBuild;
+	private TurretsManager turretToBuild;
 
-	public GameObject GetTurretToBuild ()
-	{
-		return turretToBuild;
+	public bool CanBuild { get { return turretToBuild != null; } }
+	public bool HasMoney { get { return PlayerStats.Money >= turretToBuild.price; } }
+
+	public void BuildTurretOn (TowePlatforms towerPlatform){
+		if (PlayerStats.Money < turretToBuild.price)
+		{
+			Debug.Log("Not enough money to build that!");
+			return;
+		}
+
+		PlayerStats.Money -= turretToBuild.price;
+
+		GameObject turret = (GameObject)Instantiate(turretToBuild.prefab, towerPlatform.GetBuildPosition(), Quaternion.identity);
+		towerPlatform.turret = turret;
+
+		Debug.Log("Turret build! Money left: " + PlayerStats.Money);
 	}
 
-	public void SetTurretToBuild (GameObject turret)
+	public void SelectTurretToBuild (TurretsManager turret)
 	{
 		turretToBuild = turret;
 	}
