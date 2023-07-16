@@ -1,11 +1,11 @@
 using UnityEngine;
-using System.Collections;
 
 public class GameDuration : MonoBehaviour {
 
 	public static bool GameIsOver;
 
-	public GameObject gameOverUI;
+	public GameObject gameOverUILoos;
+	public GameObject gameOverUIWin;
 
 	void Start ()
 	{
@@ -16,16 +16,24 @@ public class GameDuration : MonoBehaviour {
 		if (GameIsOver)
 			return;
 
-		if (PlayerStats.Lives <= 0)
-		{
-			EndGame();
+		if (WaveSpawner.winDetect){
+			EndGameWin();
+		}
+		if (PlayerStats.Lives <= 0){
+			EndGameLoos();
 		}
 	}
 
-	void EndGame ()
+	void EndGameWin ()
 	{
-		GameIsOver = true;
-		gameOverUI.SetActive(true);
+		GameIsOver = true;		
+		gameOverUIWin.SetActive(true);
+	}
+
+	void EndGameLoos ()
+	{
+		GameIsOver = true;		
+		gameOverUILoos.SetActive(true);
 	}
 
 }

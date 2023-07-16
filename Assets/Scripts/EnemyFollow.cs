@@ -17,11 +17,15 @@ public class EnemyFollow : MonoBehaviour
     public EndOfPathInstruction Stop;
     private Transform gameCam;
     public Transform partToRotate;
+    [HideInInspector]
+    public static float healthFactor = 1.0f;
+    public static float healthForBar = 0;
 
     void Start ()
 	{
 		speed = startSpeed;
-		health = startHealth;
+		health = startHealth * healthFactor;
+        healthForBar = health;
         gameCam = GameObject.FindGameObjectWithTag("MainCamera").transform;
 	}    
 
@@ -39,7 +43,7 @@ public class EnemyFollow : MonoBehaviour
     public void TakeDamage (int amount)
 	{
 		health -= amount;
-        healthBar.fillAmount = health / startHealth;
+        healthBar.fillAmount = health / healthForBar;
 
 		if (health <= 0)
 		{
@@ -53,10 +57,12 @@ public class EnemyFollow : MonoBehaviour
         PlayerStats.score += scoreReward;
 
 		Destroy(gameObject);
+        WaveSpawner.countOfEnemys--;        
 	}
 
     void EndPath (){
         PlayerStats.Lives -= damage;
         Destroy(gameObject);
+        WaveSpawner.countOfEnemys--;
     }
 }
