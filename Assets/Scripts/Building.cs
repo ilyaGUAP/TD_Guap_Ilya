@@ -2,6 +2,7 @@ using UnityEngine;
 public class Building : MonoBehaviour {
 
 	public static Building instance;
+	public GameObject upgradeEffect;
 	
 	void Awake ()
 	{
@@ -19,27 +20,42 @@ public class Building : MonoBehaviour {
 
 	private TurretsManager turretToBuild;
 
+	private TowerPlatforms selectedNode;
+
+	public TurretUI turretUI;
+
 	public bool CanBuild { get { return turretToBuild != null; } }
 	public bool HasMoney { get { return PlayerStats.Money >= turretToBuild.price; } }
-
-	public void BuildTurretOn (TowePlatforms towerPlatform){
-		if (PlayerStats.Money < turretToBuild.price)
+	
+	public void SelectNode (TowerPlatforms node)
+	{
+		if (selectedNode == node)
 		{
-			Debug.Log("Not enough money to build that!");
+			DeselectNode();
 			return;
 		}
 
-		PlayerStats.Money -= turretToBuild.price;
+		selectedNode = node;
+		turretToBuild = null;
 
-		GameObject turret = (GameObject)Instantiate(turretToBuild.prefab, towerPlatform.GetBuildPosition(), Quaternion.identity);
-		towerPlatform.turret = turret;
+		turretUI.SetTarget(node);
+	}
 
-		Debug.Log("Turret build! Money left: " + PlayerStats.Money);
+	public void DeselectNode()
+	{
+		selectedNode = null;
+		turretUI.Hide();
 	}
 
 	public void SelectTurretToBuild (TurretsManager turret)
 	{
 		turretToBuild = turret;
+		DeselectNode();
+	}
+
+	public TurretsManager GetTurretToBuild ()
+	{
+		return turretToBuild;
 	}
 
 }
