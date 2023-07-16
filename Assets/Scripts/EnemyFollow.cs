@@ -1,16 +1,29 @@
 using UnityEngine;
 using PathCreation;
+using UnityEngine.UI;
 
 public class EnemyFollow : MonoBehaviour
 {
     public PathCreator pathCreator;
-    public float speed = 5; 
-    public int health = 100;
+    private float distanceTravelled;
+    private float speed;
+    public float startSpeed = 5;
+    public float startHealth = 100; 
+    private float health;
     public int reward = 50;
     public int damage = 1;
     public int scoreReward = 3;
+    public Image healthBar;
     public EndOfPathInstruction Stop;
-    float distanceTravelled;
+    private Transform gameCam;
+    public Transform partToRotate;
+
+    void Start ()
+	{
+		speed = startSpeed;
+		health = startHealth;
+        gameCam = GameObject.FindGameObjectWithTag("MainCamera").transform;
+	}    
 
     void Update()
     {
@@ -20,11 +33,13 @@ public class EnemyFollow : MonoBehaviour
         if (distanceTravelled >= 269){
             EndPath();
         }
+        partToRotate.transform.LookAt(gameCam);
     }
 
     public void TakeDamage (int amount)
 	{
 		health -= amount;
+        healthBar.fillAmount = health / startHealth;
 
 		if (health <= 0)
 		{
