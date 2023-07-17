@@ -6,9 +6,7 @@ using UnityEngine.SceneManagement;
 public class WinGame : MonoBehaviour {
 
 	public TextMeshProUGUI scoreText;
-	public string sceneToLoad = "MenuScene";
-	public static string playerName;
-	public TextMeshProUGUI playerNameField;
+	public string sceneToLoad = "MenuScene";	
 
 	void OnEnable ()
 	{
@@ -21,7 +19,7 @@ public class WinGame : MonoBehaviour {
 		string lastKey;
 		string key = "0";
 
-		if (playerName != null)
+		if (NameCheck.playerName != null)
 		{
 			do
 			{	
@@ -32,22 +30,17 @@ public class WinGame : MonoBehaviour {
 
 			if (lastKey == "0" )
 			{
-				PlayerPrefs.SetString("1", playerName);
+				PlayerPrefs.SetString("1", NameCheck.playerName);
 			}
 			else
 			{
-				PlayerPrefs.SetString(key, playerName);
+				PlayerPrefs.SetString(key, NameCheck.playerName);
 			}
 
-			PlayerPrefs.SetInt(playerName, PlayerStats.score);
+			PlayerPrefs.SetInt(NameCheck.playerName, PlayerStats.score);
 		}
 		PlayerPrefs.Save();		
 
 		SceneManager.LoadScene(sceneToLoad);
-	}
-
-	public void SaveName(){
-		playerName = playerNameField.text.ToString();
-	}
-
+	}	
 }

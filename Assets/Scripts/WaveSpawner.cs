@@ -93,20 +93,20 @@ public class WaveSpawner : MonoBehaviour{
             case 7:
                 cube = 10;
                 sphere = 10;
-                cilinder = 6;
+                cilinder = 10;
                 EnemyFollow.healthFactor = 1.5f;
                 break;
             case 8:
-                cube = 5;
-                sphere = 10;
-                cilinder = 10;
-                EnemyFollow.healthFactor = 1.5f;
+                cube = 12;
+                sphere = 12;
+                cilinder = 12;
+                EnemyFollow.healthFactor = 2.0f;
                 break;
             case 9:
-                cube = 10;
-                sphere = 10;
-                cilinder = 10;
-                EnemyFollow.healthFactor = 1.5f;                
+                cube = 15;
+                sphere = 15;
+                cilinder = 15;
+                EnemyFollow.healthFactor = 2.0f;                
                 break;
             default:
                 cube = 0;

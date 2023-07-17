@@ -12,24 +12,21 @@ public class RecordManager : MonoBehaviour
         int count = 0;
 		string lastKey;
 		string key = "0";
-        string playerName = null;
-
+        string recPlayerName = null;
         string recKey;
 
-		if (playerName != null)
-		{
-			do
-			{	
-				lastKey = key;	
-				count++;
-				key = count.ToString();
-			} while (PlayerPrefs.HasKey(key));
-        }
+		do
+		{	
+			lastKey = key;	
+			count++;
+			key = count.ToString();
+		} while (PlayerPrefs.HasKey(key));
+
         for (int i = 0; i < count; i++)
         {
             recKey = i.ToString();
-            playerName = PlayerPrefs.GetString(recKey);
-            recordsField.text += "\n" + PlayerPrefs.GetInt(playerName).ToString();
+            recPlayerName = PlayerPrefs.GetString(recKey);
+            recordsField.text += "\n" + recPlayerName + " " + PlayerPrefs.GetInt(recPlayerName).ToString();
         }
     }
 
