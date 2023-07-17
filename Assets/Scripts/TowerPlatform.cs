@@ -92,6 +92,7 @@ public class TowerPlatforms : MonoBehaviour {
 
 		Destroy(turret);
 		turretsManager = null;
+		isUpgraded = false;
 	}
 
 	void OnMouseEnter ()
