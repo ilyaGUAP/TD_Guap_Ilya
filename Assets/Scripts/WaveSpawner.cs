@@ -106,7 +106,7 @@ public class WaveSpawner : MonoBehaviour{
                 cube = 10;
                 sphere = 10;
                 cilinder = 10;
-                EnemyFollow.healthFactor = 2.0f;                
+                EnemyFollow.healthFactor = 1.5f;                
                 break;
             default:
                 cube = 0;
